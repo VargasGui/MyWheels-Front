@@ -1,7 +1,8 @@
 import axios from 'axios';
 
-export const fetchMiniatures = () => {
-  return axios.get('https://jsonplaceholder.typicode.com/users')
+const API_URL = 'http://localhost:8080/api/v1/';
+export const GetAll = () => {
+  return axios.get(API_URL + 'cars')
     .then(response => response.data)
     .catch(error => {
       console.error('Error fetching miniatures:', error);

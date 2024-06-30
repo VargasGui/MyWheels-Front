@@ -2,20 +2,10 @@ import DirectionsCarIcon from '@mui/icons-material/DirectionsCarOutlined';
 import GroupWorkIcon from '@mui/icons-material/GroupWorkOutlined';
 import InventoryIcon from '@mui/icons-material/Inventory2Outlined';
 import HelpIcon from '@mui/icons-material/HelpOutline';
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import { CommonMenu } from '../../Components/Menu';
+
 
 function Navbar() {
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
     return (
         <div className="bg-[#545454] h-[12vh] border-b-2 border-black flex justify-between">
             <div className="flex items-center pl-4 w-[62%]">
@@ -28,7 +18,7 @@ function Navbar() {
                 <ul className="flex">
                     <li className="text-white text-md italic font-semibold px-4 flex items-center gap-1 hover:text-blue-400">
                         <DirectionsCarIcon fontSize='small' />
-                        <a href='#'>Miniaturas</a>
+                        <a href='/miniatures'>Miniaturas</a>
                     </li>
                     <li className="text-white text-md italic font-semibold px-4 flex items-center gap-1 hover:text-blue-400">
                         <GroupWorkIcon fontSize='small' />
@@ -41,7 +31,20 @@ function Navbar() {
                     <li className="text-white text-md italic font-semibold px-4 flex items-center gap-1 pl-10">
                         <HelpIcon fontSize='small' />
                         <div className='ml-[-7px] pt-[2px] flex items-center '>
-                            <Button
+                            <CommonMenu title={"Infos"} item1={"-- O que é uma miniatura T-Hunt ou Super T-Hunt?"} item2={"-- Tudo que você precisa saber para uma boa coleção"} item3={"-- Sobre nós"}/>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    )
+}
+
+export default Navbar;
+
+
+
+{/* <Button
                                 id="basic-button"
                                 aria-controls={open ? 'basic-menu' : undefined}
                                 aria-haspopup="true"
@@ -64,13 +67,4 @@ function Navbar() {
                                 <MenuItem onClick={handleClose}>-- O que é uma miniatura T-Hunt ou Super T-Hunt?</MenuItem>
                                 <MenuItem onClick={handleClose}>-- Tudo que você precisa saber para uma boa coleção</MenuItem>
                                 <MenuItem onClick={handleClose}>-- Sobre nós</MenuItem>
-                            </Menu>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    )
-}
-
-export default Navbar;
+                            </Menu> */}
