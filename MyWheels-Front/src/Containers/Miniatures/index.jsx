@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { GetAll } from '../../Services/Miniatures.service';
 import Card from '../../Components/Card';
+import Modal from '../../Components/Modal';
 
 function Miniatures() {
     const [miniatures, setMiniatures] = useState([]);
@@ -24,6 +25,9 @@ function Miniatures() {
     return (
         <div>
             <h1 className="text-black">2024</h1>
+            <div>
+                <Modal />
+            </div>
             <div className='flex flex-row gap-4'>
                 {miniatures.map((car) => (
                     <Card key={car.Id} image={car.ImageUrl} name={car.Name} description={car.Description} collectionName={car.Collection.Name} batchName={car.Batch.Name} aquisitionDate={car.AcquisitionDate} isThunt={car.IsThunt} isSuper={car.IsSuperThunt} />
@@ -36,7 +40,3 @@ function Miniatures() {
 }
 
 export default Miniatures;
-
-// {miniatures.map((miniature) => (
-//     <li key={miniature.id}>{miniature.Name} - {miniature.Batch.Id}</li>
-// ))}

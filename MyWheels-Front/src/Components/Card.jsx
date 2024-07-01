@@ -41,7 +41,7 @@ const MiniatureCard = (props) => {
 export default MiniatureCard;
 
 MiniatureCard.propTypes = {
-    image: PropTypes.string.isRequired,
+    image: PropTypes.string,
     name: PropTypes.string.isRequired,
     description: PropTypes.string,
     collectionName: PropTypes.string.isRequired,
