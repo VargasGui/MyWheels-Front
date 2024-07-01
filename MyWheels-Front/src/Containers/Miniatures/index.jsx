@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { GetAll } from '../../Services/Miniatures.service';
+import { MiniaturesService } from '../../Services/Miniatures.service';
 import Card from '../../Components/Card';
 import Modal from '../../Components/Modal';
 
@@ -7,10 +7,13 @@ function Miniatures() {
     const [miniatures, setMiniatures] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    const { GetAll } = MiniaturesService();
+
+
     useEffect(() => {
         GetAll()
-            .then(data => {
-                setMiniatures(data);
+            .then((response) => {
+                setMiniatures(response.data);
                 setLoading(false);
             })
             .catch(error => {
@@ -18,6 +21,7 @@ function Miniatures() {
                 setLoading(false);
             });
     }, []);
+
 
     if (loading) {
         return <h1>Carregando...</h1>
@@ -28,7 +32,7 @@ function Miniatures() {
             <div>
                 <Modal />
             </div>
-            <div className='flex flex-row gap-4'>
+            <div className='flex flex-row gap-4 flex-wrap'>
                 {miniatures.map((car) => (
                     <Card key={car.Id} image={car.ImageUrl} name={car.Name} description={car.Description} collectionName={car.Collection.Name} batchName={car.Batch.Name} aquisitionDate={car.AcquisitionDate} isThunt={car.IsThunt} isSuper={car.IsSuperThunt} />
                 ))}

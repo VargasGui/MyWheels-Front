@@ -19,7 +19,11 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import 'dayjs/locale/pt-br';
 
+import {MiniaturesService} from '../Services/Miniatures.service';
+
 const CreateMiniatureModal = () => {
+    const {Create} = MiniaturesService();
+
     const [collectionIdForm, setCollectionIdForm] = React.useState('');
     const handleChangeCollectionId = (event) => {
         setCollectionIdForm(event.target.value);
@@ -44,6 +48,10 @@ const CreateMiniatureModal = () => {
         setOpen(true);
     };
     const handleClose = () => {
+        setCollectionIdForm('');
+        setLoteIdForm('');
+        setThuntChecked(false);
+        setSuperThuntChecked(false);
         setOpen(false);
     };
 
@@ -64,7 +72,11 @@ const CreateMiniatureModal = () => {
                         event.preventDefault();
                         const formData = new FormData(event.currentTarget);
                         const formJson = Object.fromEntries(formData.entries());
-                        console.log(formJson);
+                        if(formJson.AcquisitionDate == ''){
+                            alert('Preencha a data de aquisição');
+                            return;
+                        }
+                        Create(formJson);
                         handleClose();
                     },
                 }}
@@ -76,20 +88,21 @@ const CreateMiniatureModal = () => {
                     </DialogContentText>
                     <div className='flex flex-col'>
                         <TextField id="outlined-basic" label="Link da Imagem" variant="outlined" name='ImageUrl' helperText="Ex. https://i.ytimg.com/vi/ytj4SdZbzMw/maxresdefault.jpg" margin="dense" />
-                        <TextField id="outlined-basic" label="Nome da miniatura" variant="outlined" name='Name' helperText="Ex. 87' Audi Quattro" margin="dense" />
+                        <TextField id="outlined-basic" label="Nome da miniatura" variant="outlined" name='Name' helperText="Ex. 87' Audi Quattro" margin="dense" required='true'/>
                         <TextField id="outlined-basic" label="Descrição" variant="outlined" name='Description' helperText="Uma breve descrição dos detalhes. (Opcional)" margin="dense" />
                         <div>
                             <FormControl fullWidth margin="dense">
                                 <InputLabel>Coleção</InputLabel>
                                 <Select
+                                    required='true'
                                     name='CollectionId'
                                     value={collectionIdForm}
                                     label="Coleção"
                                     onChange={handleChangeCollectionId}
                                 >
-                                    <MenuItem value={'10'}>Col 1</MenuItem>
-                                    <MenuItem value={'20'}>Col 2</MenuItem>
-                                    <MenuItem value={'30'}>Col 3</MenuItem>
+                                    <MenuItem value={9}>Col 1</MenuItem>
+                                    <MenuItem value={10}>Col 2</MenuItem>
+                                    <MenuItem value={11}>Col 3</MenuItem>
                                 </Select>
                             </FormControl>
                             <span className='pl-4 text-[13px] text-gray-500'>Selecione a coleção a que pertence</span>
@@ -98,14 +111,15 @@ const CreateMiniatureModal = () => {
                             <FormControl fullWidth margin="dense">
                                 <InputLabel>Lote</InputLabel>
                                 <Select
-                                    name='LoteId'
+                                    required='true'
+                                    name='BatchId'
                                     value={loteIdForm}
                                     label="Lote"
                                     onChange={handleChangeLoteId}
                                 >
-                                    <MenuItem value={'10'}>Lote 1</MenuItem>
-                                    <MenuItem value={'20'}>Lote 2</MenuItem>
-                                    <MenuItem value={'30'}>Lote 3</MenuItem>
+                                    <MenuItem value={9}>Lote 1</MenuItem>
+                                    <MenuItem value={10}>Lote 2</MenuItem>
+                                    <MenuItem value={11}>Lote 3</MenuItem>
                                 </Select>
                             </FormControl>
                             <span className='pl-4 text-[13px] text-gray-500'>Selecione a coleção a que pertence</span>
@@ -113,7 +127,7 @@ const CreateMiniatureModal = () => {
                         <div className='mt-2 '>
                             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='pt-br'>
                                 <DemoContainer components={['DatePicker']}>
-                                    <DatePicker format='YYYY-MM-DD' label="Data de aquisição" name='AcquisitionDate' onChange={(newValue) => console.log(newValue)} />
+                                    <DatePicker format='YYYY-MM-DD' label="Data de aquisição" name='AcquisitionDate' />
                                 </DemoContainer>
                             </LocalizationProvider>
                             <span className='pl-4 text-[13px] text-gray-500'>A data em que você o adquiriu</span>
@@ -126,7 +140,6 @@ const CreateMiniatureModal = () => {
                                 checked={ThuntChecked}
                                 value={ThuntChecked}
                                 onChange={handleChangeThunt}
-                                inputProps={{ 'aria-label': 'controlled' }}
                                 name='IsThunt'
                             />
                             <span className='text-gray-500 text-[13px]'>(Selecione se a sua miniatura for do tipo T-Hunt)</span>
@@ -137,7 +150,6 @@ const CreateMiniatureModal = () => {
                                 checked={SuperThuntChecked}
                                 value={SuperThuntChecked}
                                 onChange={handleChangeSuperThunt}
-                                inputProps={{ 'aria-label': 'controlled' }}
                                 name='IsSuperThunt'
                             />
                             <span className='text-gray-500 text-[13px]'>(Selecione se a sua miniatura for do tipo Super T-Hunt)</span>
