@@ -19,10 +19,42 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import 'dayjs/locale/pt-br';
 
-import {MiniaturesService} from '../Services/Miniatures.service';
+import { MiniaturesService } from '../Services/Miniatures.service';
+import { CollectionsService } from '../Services/Collections.service';
+import { BatchesService } from '../Services/Batches.service';
 
 const CreateMiniatureModal = () => {
-    const {Create} = MiniaturesService();
+    const { CreateMiniatures } = MiniaturesService();
+    const { GetAllCollections } = CollectionsService();
+    const { GetAllBatches } = BatchesService();
+
+    const [collections, setCollections] = React.useState([]);
+    const [batches, setBatches] = React.useState([]);
+    React.useEffect(() => {
+        GetAllCollections()
+            .then((data) => {
+                setCollections(data);
+            })
+            .catch(error => {
+                console.error('Failed to get collections:', error);
+            });
+        GetAllBatches()
+            .then((data) => {
+                setBatches(data);
+            })
+            .catch(error => {
+                console.error('Failed to get batches:', error);
+            });
+    }, [])
+    const SendDataToCreateMiniatures = (data) => {
+        CreateMiniatures(data)
+            .then(() => {
+                alert('Miniatura criada com sucesso!')
+            })
+            .catch(error => {
+                alert('Erro ao criar miniatura.\n' + error.message);
+            });
+    }
 
     const [collectionIdForm, setCollectionIdForm] = React.useState('');
     const handleChangeCollectionId = (event) => {
@@ -72,11 +104,11 @@ const CreateMiniatureModal = () => {
                         event.preventDefault();
                         const formData = new FormData(event.currentTarget);
                         const formJson = Object.fromEntries(formData.entries());
-                        if(formJson.AcquisitionDate == ''){
+                        if (formJson.AcquisitionDate == '') {
                             alert('Preencha a data de aquisição');
                             return;
                         }
-                        Create(formJson);
+                        SendDataToCreateMiniatures(formJson);
                         handleClose();
                     },
                 }}
@@ -88,21 +120,21 @@ const CreateMiniatureModal = () => {
                     </DialogContentText>
                     <div className='flex flex-col'>
                         <TextField id="outlined-basic" label="Link da Imagem" variant="outlined" name='ImageUrl' helperText="Ex. https://i.ytimg.com/vi/ytj4SdZbzMw/maxresdefault.jpg" margin="dense" />
-                        <TextField id="outlined-basic" label="Nome da miniatura" variant="outlined" name='Name' helperText="Ex. 87' Audi Quattro" margin="dense" required='true'/>
+                        <TextField id="outlined-basic" label="Nome da miniatura" variant="outlined" name='Name' helperText="Ex. 87' Audi Quattro" margin="dense" required={true} />
                         <TextField id="outlined-basic" label="Descrição" variant="outlined" name='Description' helperText="Uma breve descrição dos detalhes. (Opcional)" margin="dense" />
                         <div>
                             <FormControl fullWidth margin="dense">
                                 <InputLabel>Coleção</InputLabel>
                                 <Select
-                                    required='true'
+                                    required={true}
                                     name='CollectionId'
                                     value={collectionIdForm}
                                     label="Coleção"
                                     onChange={handleChangeCollectionId}
                                 >
-                                    <MenuItem value={9}>Col 1</MenuItem>
-                                    <MenuItem value={10}>Col 2</MenuItem>
-                                    <MenuItem value={11}>Col 3</MenuItem>
+                                    {collections.map((collection) => (
+                                        <MenuItem key={collection.Id} value={collection.Id}>{collection.Name}</MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
                             <span className='pl-4 text-[13px] text-gray-500'>Selecione a coleção a que pertence</span>
@@ -111,15 +143,15 @@ const CreateMiniatureModal = () => {
                             <FormControl fullWidth margin="dense">
                                 <InputLabel>Lote</InputLabel>
                                 <Select
-                                    required='true'
+                                    required={true}
                                     name='BatchId'
                                     value={loteIdForm}
                                     label="Lote"
                                     onChange={handleChangeLoteId}
                                 >
-                                    <MenuItem value={9}>Lote 1</MenuItem>
-                                    <MenuItem value={10}>Lote 2</MenuItem>
-                                    <MenuItem value={11}>Lote 3</MenuItem>
+                                    {batches.map((batch) => (
+                                        <MenuItem key={batch.Id} value={batch.Id}>{batch.Name}</MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
                             <span className='pl-4 text-[13px] text-gray-500'>Selecione a coleção a que pertence</span>
@@ -171,4 +203,7 @@ const CreateMiniatureModal = () => {
     );
 }
 
+
 export default CreateMiniatureModal;
+
+

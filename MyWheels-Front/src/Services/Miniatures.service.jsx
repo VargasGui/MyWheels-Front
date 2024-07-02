@@ -1,6 +1,5 @@
 import axios from 'axios';
 import Car from '../models/Car.model';
-import React from 'react';
 
 const API_URL = 'http://localhost:8080/api/v1/';
 
@@ -8,10 +7,10 @@ export const MiniaturesService = () => {
 
 
 
-  const GetAll = () => {
+  const GetAllMiniatures = () => {
     return axios.get(API_URL + 'cars')
       .then(response => {
-        return response
+        return response.data;
       })
       .catch(error => {
         console.error('Error fetching miniatures:', error);
@@ -20,7 +19,7 @@ export const MiniaturesService = () => {
 
   }
 
-  const Create = (form) => {
+  const CreateMiniatures = (form) => {
     const car = new Car(
       form.ImageUrl,
       form.Name,
@@ -31,19 +30,15 @@ export const MiniaturesService = () => {
       form.IsThunt,
       form.IsSuperThunt
     );
-
+    
     return axios.post(API_URL + 'cars', car)
-      .then(
-        GetAll()
-      )
-      .catch(error => {
-        console.error('Error creating miniature:', error);
-        return [];
-      });
+      .then((response) => {
+        return response;
+      })
   }
   return {
-    GetAll,
-    Create
+    GetAllMiniatures,
+    CreateMiniatures
   }
 }
 

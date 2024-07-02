@@ -6,9 +6,12 @@ import { CardActionArea } from '@mui/material';
 import PropTypes from 'prop-types';
 
 const MiniatureCard = (props) => {
+    const handleClick = () => {
+        alert('Card clicado!');
+    };
     return (
         <Card sx={{ maxWidth: 280, backgroundColor: '#e0e0e0', borderRadius: '0.5 rem'}}>
-            <CardActionArea>
+            <CardActionArea onClick={handleClick}>
                 <div className='w-full flex items-center justify-center'>
                     <div className='w-[80%] mt-3'>
                         <CardMedia className='rounded-lg'

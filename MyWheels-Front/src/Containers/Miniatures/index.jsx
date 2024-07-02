@@ -7,13 +7,13 @@ function Miniatures() {
     const [miniatures, setMiniatures] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const { GetAll } = MiniaturesService();
+    const { GetAllMiniatures } = MiniaturesService();
 
 
     useEffect(() => {
-        GetAll()
-            .then((response) => {
-                setMiniatures(response.data);
+        GetAllMiniatures()
+            .then((data) => {
+                setMiniatures(data);
                 setLoading(false);
             })
             .catch(error => {
@@ -21,7 +21,7 @@ function Miniatures() {
                 setLoading(false);
             });
     }, []);
-
+    
 
     if (loading) {
         return <h1>Carregando...</h1>
