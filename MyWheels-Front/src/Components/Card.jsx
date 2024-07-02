@@ -4,20 +4,29 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import PropTypes from 'prop-types';
+import React from 'react';
+import CustomizedDialogs from './ModalDetails';
 
 const MiniatureCard = (props) => {
-    const handleClick = () => {
-        alert('Card clicado!');
+    const [openModal, setOpenModal] = React.useState(false);
+
+    const handleOpenModal = () => {
+        setOpenModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setOpenModal(false);
     };
     return (
-        <Card sx={{ maxWidth: 280, backgroundColor: '#e0e0e0', borderRadius: '0.5 rem'}}>
-            <CardActionArea onClick={handleClick}>
+        <Card sx={{ maxWidth: 280, backgroundColor: '#e0e0e0', borderRadius: '0.5 rem' }}>
+            <CardActionArea onClick={handleOpenModal}>
+
                 <div className='w-full flex items-center justify-center'>
                     <div className='w-[80%] mt-3'>
                         <CardMedia className='rounded-lg'
                             component="img"
                             height="140"
-                            image= {props.image}
+                            image={props.image}
                             alt=""
                         />
                     </div>
@@ -38,6 +47,7 @@ const MiniatureCard = (props) => {
                     </Typography>
                 </CardContent>
             </CardActionArea>
+            <CustomizedDialogs openedModal={openModal} closedModal={handleCloseModal} miniaturesInfo={props}/>
         </Card>
     );
 }
@@ -52,4 +62,4 @@ MiniatureCard.propTypes = {
     aquisitionDate: PropTypes.string.isRequired,
     isThunt: PropTypes.bool.isRequired,
     isSuper: PropTypes.bool.isRequired,
-  };
+};
