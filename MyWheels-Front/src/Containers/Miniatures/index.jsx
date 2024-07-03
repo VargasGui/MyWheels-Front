@@ -1,28 +1,43 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { MiniaturesService } from '../../Services/Miniatures.service';
 import Card from '../../Components/Card';
 import Modal from '../../Components/Modal';
 
 function Miniatures() {
+    const useEffectExecuted = useRef(false);
+    const [openedModal, setOpenedModal] = useState(false);
     const [miniatures, setMiniatures] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const { GetAllMiniatures, miniatures$} = MiniaturesService();
-
-    useEffect(() => {
-        GetAllMiniatures()
-        .then(() => setLoading(false))
-        .catch(error => {
-            console.error('Failed to get miniatures:', error);
-            setLoading(false);
-        });
-    }, []);
+    
+    const { GetAllMiniatures, miniaturesList } = MiniaturesService();
     
     useEffect(() => {
-        setMiniatures(miniatures$);
-        console.log(miniatures$)
-        setLoading(false);
-    }, [miniatures$]);
+        if (useEffectExecuted.current) return;
+        GetAllMiniatures()
+            .then(() => {
+                setLoading(false)
+                // setMiniatures(data);
+            }) 
+            .catch(error => {
+                console.error('Failed to get miniatures:', error);
+                setLoading(false);
+            });
+        useEffectExecuted.current = true;
+    }, []);
+
+    useEffect(() => {
+        console.log("Mudou o valor")
+        setMiniatures(miniaturesList);
+    }, [miniaturesList])
+
+
+    const HandleOpenModal = () => {
+        setOpenedModal(true);
+    }
+    const HandleCloseModal = () => {
+        setOpenedModal(false);
+    }
 
 
     if (loading) {
@@ -31,8 +46,10 @@ function Miniatures() {
     return (
         <div>
             <h1 className="text-black">2024</h1>
-            <div>
-                <Modal />
+            <div className='bg-blue-200 p-6'>
+                <button className='bg-black p-8' onClick={HandleOpenModal}>
+
+                </button>
             </div>
             <div className='flex flex-row gap-4 flex-wrap'>
                 {miniatures.map((car) => (
@@ -41,6 +58,7 @@ function Miniatures() {
             </div>
 
 
+            <Modal openedModal={openedModal} closedModal={HandleCloseModal}/>
         </div>
     );
 }

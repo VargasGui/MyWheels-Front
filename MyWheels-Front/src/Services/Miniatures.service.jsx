@@ -6,22 +6,19 @@ const API_URL = 'http://localhost:8080/api/v1/';
 
 export const MiniaturesService = () => {
 
-  const [miniatures$, setMiniatures$] = useState([]);
-
-  useEffect(() => {
-    console.log(miniatures$)
-  }, [miniatures$]);
+  const [miniaturesList, setMiniaturesList] = useState([]);
 
   const GetAllMiniatures = () => {
+    console.log("executado o getall")
     return axios.get(API_URL + 'cars')
       .then(response => {
-        return setMiniatures$(response.data);
+        // return response.data;
+        setMiniaturesList(response.data);
       })
       .catch(error => {
         console.error('Error fetching miniatures:', error);
         return [];
       });
-
   }
 
   const CreateMiniatures = (form) => {
@@ -38,7 +35,7 @@ export const MiniaturesService = () => {
 
     return axios.post(API_URL + 'cars', car)
       .then((response) => {
-        setMiniatures$([...miniatures$, car]);
+        GetAllMiniatures()
         return response;
       })
   }
@@ -46,7 +43,6 @@ export const MiniaturesService = () => {
   const DeleteMiniatures = (id) => {
     return axios.delete(API_URL + 'cars/' + id)
       .then(response => {
-        setMiniatures$(miniatures$.filter(car => car.Id !== id));
         return response;
       })
   }
@@ -56,7 +52,7 @@ export const MiniaturesService = () => {
     GetAllMiniatures,
     CreateMiniatures,
     DeleteMiniatures,
-    miniatures$,
+    miniaturesList
   }
 }
 

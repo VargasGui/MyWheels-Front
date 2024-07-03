@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { React, useRef, useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -22,15 +22,19 @@ import 'dayjs/locale/pt-br';
 import { MiniaturesService } from '../Services/Miniatures.service';
 import { CollectionsService } from '../Services/Collections.service';
 import { BatchesService } from '../Services/Batches.service';
+import PropTypes from 'prop-types';
 
-const CreateMiniatureModal = () => {
+const CreateMiniatureModal = (props) => {
+    const { openedModal, closedModal } = props;
+    const useEffectExecuted = useRef(false);
     const { CreateMiniatures } = MiniaturesService();
     const { GetAllCollections } = CollectionsService();
     const { GetAllBatches } = BatchesService();
 
-    const [collections, setCollections] = React.useState([]);
-    const [batches, setBatches] = React.useState([]);
-    React.useEffect(() => {
+    const [collections, setCollections] = useState([]);
+    const [batches, setBatches] = useState([]);
+    useEffect(() => {
+        if (useEffectExecuted.current) return;
         GetAllCollections()
             .then((data) => {
                 setCollections(data);
@@ -45,58 +49,60 @@ const CreateMiniatureModal = () => {
             .catch(error => {
                 console.error('Failed to get batches:', error);
             });
+        useEffectExecuted.current = true;
     }, [])
+
     const SendDataToCreateMiniatures = (data) => {
         CreateMiniatures(data)
             .then(() => {
-                alert('Miniatura criada com sucesso!')
+                alert('Miniatura criada com sucesso!');
             })
             .catch(error => {
                 alert('Erro ao criar miniatura.\n' + error.message);
             });
     }
 
-    const [collectionIdForm, setCollectionIdForm] = React.useState('');
+    const [collectionIdForm, setCollectionIdForm] = useState('');
     const handleChangeCollectionId = (event) => {
         setCollectionIdForm(event.target.value);
     };
-    const [loteIdForm, setLoteIdForm] = React.useState('');
+    const [loteIdForm, setLoteIdForm] = useState('');
     const handleChangeLoteId = (event) => {
         setLoteIdForm(event.target.value);
     };
 
-    const [ThuntChecked, setThuntChecked] = React.useState(false);
+    const [ThuntChecked, setThuntChecked] = useState(false);
     const handleChangeThunt = (event) => {
         setThuntChecked(event.target.checked);
     };
 
-    const [SuperThuntChecked, setSuperThuntChecked] = React.useState(false);
+    const [SuperThuntChecked, setSuperThuntChecked] = useState(false);
     const handleChangeSuperThunt = (event) => {
         setSuperThuntChecked(event.target.checked);
     };
 
-    const [open, setOpen] = React.useState(false);
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
+    // const [open, setOpen] = React.useState(false);
+    // const handleClickOpen = () => {
+    //     setOpen(true);
+    // };
     const handleClose = () => {
         setCollectionIdForm('');
         setLoteIdForm('');
         setThuntChecked(false);
         setSuperThuntChecked(false);
-        setOpen(false);
+        closedModal();
     };
 
     return (
-        <React.Fragment>
-            <div className='bg-blue-400  inline-block rounded-full'>
+        <>
+            {/* <div className='bg-blue-400  inline-block rounded-full'>
                 <Button onClick={handleClickOpen}>
                     <AddIcon className='text-white' />
                 </Button>
-            </div>
+            </div> */}
 
             <Dialog
-                open={open}
+                open={openedModal}
                 onClose={handleClose}
                 PaperProps={{
                     component: 'form',
@@ -199,10 +205,14 @@ const CreateMiniatureModal = () => {
                     </div>
                 </DialogActions>
             </Dialog>
-        </React.Fragment>
+        </>
     );
 }
 
+CreateMiniatureModal.propTypes = {
+    openedModal: PropTypes.bool,
+    closedModal: PropTypes.func,
+}
 
 export default CreateMiniatureModal;
 
