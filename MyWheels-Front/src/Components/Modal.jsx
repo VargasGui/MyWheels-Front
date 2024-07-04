@@ -1,17 +1,16 @@
 import { React, useRef, useState, useEffect } from 'react';
-import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import AddIcon from '@mui/icons-material/Add';
 import Switch from '@mui/material/Switch';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+
 
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -25,7 +24,8 @@ import { BatchesService } from '../Services/Batches.service';
 import PropTypes from 'prop-types';
 
 const CreateMiniatureModal = (props) => {
-    const { openedModal, closedModal } = props;
+    const { openedModal, closedModal, toUpdate, dataToEdit } = props;
+
     const useEffectExecuted = useRef(false);
     const { CreateMiniatures } = MiniaturesService();
     const { GetAllCollections } = CollectionsService();
@@ -35,31 +35,44 @@ const CreateMiniatureModal = (props) => {
     const [batches, setBatches] = useState([]);
     useEffect(() => {
         if (useEffectExecuted.current) return;
-        GetAllCollections()
-            .then((data) => {
-                setCollections(data);
-            })
-            .catch(error => {
-                console.error('Failed to get collections:', error);
-            });
-        GetAllBatches()
-            .then((data) => {
-                setBatches(data);
-            })
-            .catch(error => {
-                console.error('Failed to get batches:', error);
-            });
-        useEffectExecuted.current = true;
-    }, [])
+        console.log(openedModal)
+        if (openedModal == true) {
+            console.log(dataToEdit)
+            GetAllCollections()
+                .then((data) => {
+                    setCollections(data);
+                })
+                .catch(error => {
+                    console.error('Failed to get collections:', error);
+                });
+            GetAllBatches()
+                .then((data) => {
+                    setBatches(data);
+                })
+                .catch(error => {
+                    console.error('Failed to get batches:', error);
+                });
+                useEffectExecuted.current = true;
+        }
 
-    const SendDataToCreateMiniatures = (data) => {
-        CreateMiniatures(data)
-            .then(() => {
-                alert('Miniatura criada com sucesso!');
-            })
-            .catch(error => {
-                alert('Erro ao criar miniatura.\n' + error.message);
-            });
+    }, [openedModal])
+
+    
+
+    const SendData = (data) => {
+        if(!toUpdate){
+            console.log(data)
+            // CreateMiniatures(data)
+            // .then(() => {
+            //     alert('Miniatura criada com sucesso!');
+            // })
+            // .catch(error => {
+            //     alert('Erro ao criar miniatura.\n' + error.message);
+            // });
+            return;
+        }
+        console.log("atualizar")
+        
     }
 
     const [collectionIdForm, setCollectionIdForm] = useState('');
@@ -81,10 +94,6 @@ const CreateMiniatureModal = (props) => {
         setSuperThuntChecked(event.target.checked);
     };
 
-    // const [open, setOpen] = React.useState(false);
-    // const handleClickOpen = () => {
-    //     setOpen(true);
-    // };
     const handleClose = () => {
         setCollectionIdForm('');
         setLoteIdForm('');
@@ -95,11 +104,6 @@ const CreateMiniatureModal = (props) => {
 
     return (
         <>
-            {/* <div className='bg-blue-400  inline-block rounded-full'>
-                <Button onClick={handleClickOpen}>
-                    <AddIcon className='text-white' />
-                </Button>
-            </div> */}
 
             <Dialog
                 open={openedModal}
@@ -114,7 +118,7 @@ const CreateMiniatureModal = (props) => {
                             alert('Preencha a data de aquisição');
                             return;
                         }
-                        SendDataToCreateMiniatures(formJson);
+                        SendData(formJson);
                         handleClose();
                     },
                 }}
@@ -125,15 +129,16 @@ const CreateMiniatureModal = (props) => {
                         Preencha os campos abaixo para adicionar uma nova miniatura!
                     </DialogContentText>
                     <div className='flex flex-col'>
-                        <TextField id="outlined-basic" label="Link da Imagem" variant="outlined" name='ImageUrl' helperText="Ex. https://i.ytimg.com/vi/ytj4SdZbzMw/maxresdefault.jpg" margin="dense" />
-                        <TextField id="outlined-basic" label="Nome da miniatura" variant="outlined" name='Name' helperText="Ex. 87' Audi Quattro" margin="dense" required={true} />
-                        <TextField id="outlined-basic" label="Descrição" variant="outlined" name='Description' helperText="Uma breve descrição dos detalhes. (Opcional)" margin="dense" />
+                        <TextField id="outlined-basic" label="Link da Imagem" variant="outlined" defaultValue={dataToEdit != undefined ? dataToEdit.image : "" } name='ImageUrl' helperText="Ex. https://i.ytimg.com/vi/ytj4SdZbzMw/maxresdefault.jpg" margin="dense" />
+                        <TextField id="outlined-basic" label="Nome da miniatura" variant="outlined" defaultValue={dataToEdit != undefined ? dataToEdit.name : "" } name='Name' helperText="Ex. 87' Audi Quattro" margin="dense" required={true} />
+                        <TextField id="outlined-basic" label="Descrição" variant="outlined" defaultValue={dataToEdit != undefined ? dataToEdit.description : "" } name='Description' helperText="Uma breve descrição dos detalhes. (Opcional)" margin="dense" />
                         <div>
                             <FormControl fullWidth margin="dense">
                                 <InputLabel>Coleção</InputLabel>
                                 <Select
                                     required={true}
                                     name='CollectionId'
+                                    defaultValue='9'
                                     value={collectionIdForm}
                                     label="Coleção"
                                     onChange={handleChangeCollectionId}
@@ -165,10 +170,14 @@ const CreateMiniatureModal = (props) => {
                         <div className='mt-2 '>
                             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='pt-br'>
                                 <DemoContainer components={['DatePicker']}>
-                                    <DatePicker format='YYYY-MM-DD' label="Data de aquisição" name='AcquisitionDate' />
+                                    <DatePicker format='YYYY-MM-DD' label="Data de aquisição" name='AcquisitionDate'
+                                    />
                                 </DemoContainer>
                             </LocalizationProvider>
                             <span className='pl-4 text-[13px] text-gray-500'>A data em que você o adquiriu</span>
+                            {
+                                dataToEdit != undefined ? <span>Valor antigo: {dataToEdit.aquisitionDate}</span> : null
+                            }
                         </div>
 
 
@@ -212,6 +221,8 @@ const CreateMiniatureModal = (props) => {
 CreateMiniatureModal.propTypes = {
     openedModal: PropTypes.bool,
     closedModal: PropTypes.func,
+    toUpdate: PropTypes.bool,
+    dataToEdit: PropTypes.object,
 }
 
 export default CreateMiniatureModal;

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MiniaturesService } from '../../Services/Miniatures.service';
 import Card from '../../Components/Card';
 import Modal from '../../Components/Modal';
@@ -58,7 +58,7 @@ function Miniatures() {
             </div>
 
 
-            <Modal openedModal={openedModal} closedModal={HandleCloseModal}/>
+            <Modal openedModal={openedModal} closedModal={HandleCloseModal} toUpdate={false}/>
         </div>
     );
 }
