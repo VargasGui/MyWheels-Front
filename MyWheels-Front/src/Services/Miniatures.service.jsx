@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Car from '../models/Car.model';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const API_URL = 'http://localhost:8080/api/v1/';
 
@@ -40,6 +40,25 @@ export const MiniaturesService = () => {
       })
   }
 
+  const UpdateMiniatures = (form, id) => {
+    const car = new Car(
+      form.ImageUrl,
+      form.Name,
+      form.CollectionId,
+      form.BatchId,
+      form.Description,
+      form.AcquisitionDate,
+      form.IsThunt,
+      form.IsSuperThunt
+    );
+
+    return axios.put(API_URL + 'cars/' + id, car)
+      .then((response) => {
+        GetAllMiniatures()
+        return response;
+      })
+  }
+
   const DeleteMiniatures = (id) => {
     return axios.delete(API_URL + 'cars/' + id)
       .then(response => {
@@ -51,9 +70,12 @@ export const MiniaturesService = () => {
   return {
     GetAllMiniatures,
     CreateMiniatures,
+    UpdateMiniatures,
     DeleteMiniatures,
     miniaturesList
   }
 }
+
+
 
 

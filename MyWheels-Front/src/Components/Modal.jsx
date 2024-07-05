@@ -1,4 +1,4 @@
-import { React, useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -27,17 +27,19 @@ const CreateMiniatureModal = (props) => {
     const { openedModal, closedModal, toUpdate, dataToEdit } = props;
 
     const useEffectExecuted = useRef(false);
-    const { CreateMiniatures } = MiniaturesService();
+    const { CreateMiniatures, UpdateMiniatures } = MiniaturesService();
     const { GetAllCollections } = CollectionsService();
     const { GetAllBatches } = BatchesService();
 
     const [collections, setCollections] = useState([]);
     const [batches, setBatches] = useState([]);
+
     useEffect(() => {
         if (useEffectExecuted.current) return;
         console.log(openedModal)
         if (openedModal == true) {
             console.log(dataToEdit)
+
             GetAllCollections()
                 .then((data) => {
                     setCollections(data);
@@ -52,27 +54,37 @@ const CreateMiniatureModal = (props) => {
                 .catch(error => {
                     console.error('Failed to get batches:', error);
                 });
-                useEffectExecuted.current = true;
+            useEffectExecuted.current = true;
+            if (dataToEdit != undefined) {
+                setThuntChecked(dataToEdit.isThunt)
+                setSuperThuntChecked(dataToEdit.isSuper)
+            }
         }
+
 
     }, [openedModal])
 
-    
 
     const SendData = (data) => {
-        if(!toUpdate){
-            console.log(data)
-            // CreateMiniatures(data)
-            // .then(() => {
-            //     alert('Miniatura criada com sucesso!');
-            // })
-            // .catch(error => {
-            //     alert('Erro ao criar miniatura.\n' + error.message);
-            // });
+        console.log(data)
+        if (!toUpdate) {
+            CreateMiniatures(data)
+                .then(() => {
+                    alert('Miniatura criada com sucesso!');
+                })
+                .catch(error => {
+                    alert('Erro ao criar miniatura.\n' + error.message);
+                });
             return;
         }
-        console.log("atualizar")
-        
+        UpdateMiniatures(data, dataToEdit.id)
+            .then(() => {
+                alert('Miniatura atualizada com sucesso!');
+            })
+            .catch(error => {
+                alert('Erro ao atualizar miniatura.\n' + error.message);
+            });
+
     }
 
     const [collectionIdForm, setCollectionIdForm] = useState('');
@@ -129,12 +141,14 @@ const CreateMiniatureModal = (props) => {
                         Preencha os campos abaixo para adicionar uma nova miniatura!
                     </DialogContentText>
                     <div className='flex flex-col'>
-                        <TextField id="outlined-basic" label="Link da Imagem" variant="outlined" defaultValue={dataToEdit != undefined ? dataToEdit.image : "" } name='ImageUrl' helperText="Ex. https://i.ytimg.com/vi/ytj4SdZbzMw/maxresdefault.jpg" margin="dense" />
-                        <TextField id="outlined-basic" label="Nome da miniatura" variant="outlined" defaultValue={dataToEdit != undefined ? dataToEdit.name : "" } name='Name' helperText="Ex. 87' Audi Quattro" margin="dense" required={true} />
-                        <TextField id="outlined-basic" label="Descrição" variant="outlined" defaultValue={dataToEdit != undefined ? dataToEdit.description : "" } name='Description' helperText="Uma breve descrição dos detalhes. (Opcional)" margin="dense" />
+                        <TextField id="outlined-basic" label="Link da Imagem" variant="outlined" defaultValue={dataToEdit != undefined ? dataToEdit.image : ""} name='ImageUrl' helperText="Ex. https://i.ytimg.com/vi/ytj4SdZbzMw/maxresdefault.jpg" margin="dense" />
+                        <TextField id="outlined-basic" label="Nome da miniatura" variant="outlined" defaultValue={dataToEdit != undefined ? dataToEdit.name : ""} name='Name' helperText="Ex. 87' Audi Quattro" margin="dense" required={true} />
+                        <TextField id="outlined-basic" label="Descrição" variant="outlined" defaultValue={dataToEdit != undefined ? dataToEdit.description : ""} name='Description' helperText="Uma breve descrição dos detalhes. (Opcional)" margin="dense" />
                         <div>
                             <FormControl fullWidth margin="dense">
-                                <InputLabel>Coleção</InputLabel>
+                                <InputLabel>{
+                                    dataToEdit != undefined ? dataToEdit.collectionName : 'Coleção'
+                                }</InputLabel>
                                 <Select
                                     required={true}
                                     name='CollectionId'
@@ -152,7 +166,9 @@ const CreateMiniatureModal = (props) => {
                         </div>
                         <div>
                             <FormControl fullWidth margin="dense">
-                                <InputLabel>Lote</InputLabel>
+                                <InputLabel>{
+                                    dataToEdit != undefined ? dataToEdit.batchName : 'Lote'
+                                }</InputLabel>
                                 <Select
                                     required={true}
                                     name='BatchId'
@@ -165,22 +181,17 @@ const CreateMiniatureModal = (props) => {
                                     ))}
                                 </Select>
                             </FormControl>
-                            <span className='pl-4 text-[13px] text-gray-500'>Selecione a coleção a que pertence</span>
+                            <span className='pl-4 text-[13px] text-gray-500'>Selecione o lote a que pertence</span>
                         </div>
                         <div className='mt-2 '>
                             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='pt-br'>
                                 <DemoContainer components={['DatePicker']}>
-                                    <DatePicker format='YYYY-MM-DD' label="Data de aquisição" name='AcquisitionDate'
+                                    <DatePicker format='YYYY-MM-DD' label={dataToEdit !== undefined ? dataToEdit.aquisitionDate : 'Data de Aquisição'} name='AcquisitionDate'
                                     />
                                 </DemoContainer>
                             </LocalizationProvider>
                             <span className='pl-4 text-[13px] text-gray-500'>A data em que você o adquiriu</span>
-                            {
-                                dataToEdit != undefined ? <span>Valor antigo: {dataToEdit.aquisitionDate}</span> : null
-                            }
                         </div>
-
-
                         <div className='flex flex-row items-center'>
                             <span>T-Hunt: </span>
                             <Switch
@@ -194,7 +205,7 @@ const CreateMiniatureModal = (props) => {
                         <div className='flex flex-row items-center'>
                             <span>Super T-Hunt: </span>
                             <Switch
-                                checked={SuperThuntChecked}
+                                defaultChecked={dataToEdit != undefined ? dataToEdit.isSuper : SuperThuntChecked}
                                 value={SuperThuntChecked}
                                 onChange={handleChangeSuperThunt}
                                 name='IsSuperThunt'
@@ -210,7 +221,7 @@ const CreateMiniatureModal = (props) => {
                         <a onClick={handleClose}>Cancelar</a>
                     </div>
                     <div className='bg-blue-400 p-2 rounded-full'>
-                        <button type='submit' className='text-white'>Adicionar</button>
+                        <button type='submit' className='text-white'>{dataToEdit != undefined ? 'Atualizar' : 'Adicionar'}</button>
                     </div>
                 </DialogActions>
             </Dialog>
