@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  background-color: #cdcbe3;
+  /* background-color: #c9c6d1; */
+}
+
+/* customScrollbar.css */
+::-webkit-scrollbar {
+  width: 8px; /* largura da scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #ccc5c5;
+  border-radius: 10px; /* cor do fundo da scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #343434; /* cor do indicador da scrollbar */
+  border-radius: 10px; /* borda arredondada */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #262626; /* cor do indicador da scrollbar ao passar o mouse */
+  cursor: pointer;
+}

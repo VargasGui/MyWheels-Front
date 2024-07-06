@@ -116,8 +116,8 @@ const CreateMiniatureModal = (props) => {
 
     return (
         <>
-
             <Dialog
+                sx={{ '& .MuiDialog-paper': { backgroundColor: '#545454', color: 'white' } }}
                 open={openedModal}
                 onClose={handleClose}
                 PaperProps={{
@@ -135,18 +135,30 @@ const CreateMiniatureModal = (props) => {
                     },
                 }}
             >
-                <DialogTitle>Adicionar uma miniatura</DialogTitle>
+                <DialogTitle className='flex items-center justify-center'>
+                    <span className='font-bold italic text-2xl'>Adicionar uma miniatura</span>
+                </DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
-                        Preencha os campos abaixo para adicionar uma nova miniatura!
+                    <DialogContentText className='flex justify-center'>
+                        <span className='text-white font-semibold pb-2'>
+                            Preencha os campos abaixo para adicionar uma nova miniatura!
+                        </span>
                     </DialogContentText>
                     <div className='flex flex-col'>
-                        <TextField id="outlined-basic" label="Link da Imagem" variant="outlined" defaultValue={dataToEdit != undefined ? dataToEdit.image : ""} name='ImageUrl' helperText="Ex. https://i.ytimg.com/vi/ytj4SdZbzMw/maxresdefault.jpg" margin="dense" />
-                        <TextField id="outlined-basic" label="Nome da miniatura" variant="outlined" defaultValue={dataToEdit != undefined ? dataToEdit.name : ""} name='Name' helperText="Ex. 87' Audi Quattro" margin="dense" required={true} />
-                        <TextField id="outlined-basic" label="Descrição" variant="outlined" defaultValue={dataToEdit != undefined ? dataToEdit.description : ""} name='Description' helperText="Uma breve descrição dos detalhes. (Opcional)" margin="dense" />
+                        <TextField id="outlined-basic" label="Link da Imagem" variant="outlined" defaultValue={dataToEdit != undefined ? dataToEdit.image : ""} name='ImageUrl' helperText="Ex. https://i.ytimg.com/vi/ytj4SdZbzMw/maxresdefault.jpg" margin="dense" InputProps={{
+                            style: { color: 'black' }
+                        }} InputLabelProps={{ style: { color: 'white' } }} />
+
+                        <TextField id="outlined-basic" label="Nome da miniatura" variant="outlined" defaultValue={dataToEdit != undefined ? dataToEdit.name : ""} name='Name' helperText="Ex. 87' Audi Quattro" margin="dense" required={true} InputProps={{
+                            style: { color: 'black' }
+                        }} InputLabelProps={{ style: { color: 'white' } }} />
+
+                        <TextField id="outlined-basic" label="Descrição" variant="outlined" defaultValue={dataToEdit != undefined ? dataToEdit.description : ""} name='Description' helperText="Uma breve descrição dos detalhes (Opcional)." margin="dense" InputProps={{
+                            style: { color: 'black' }, inputProps: { maxLength: 350 }
+                        }} InputLabelProps={{ style: { color: 'white' } }} />
                         <div>
-                            <FormControl fullWidth margin="dense">
-                                <InputLabel>{
+                            <FormControl fullWidth margin="dense" >
+                                <InputLabel sx={{ color: 'white' }}>{
                                     dataToEdit != undefined ? dataToEdit.collectionName : 'Coleção'
                                 }</InputLabel>
                                 <Select
@@ -162,11 +174,11 @@ const CreateMiniatureModal = (props) => {
                                     ))}
                                 </Select>
                             </FormControl>
-                            <span className='pl-4 text-[13px] text-gray-500'>Selecione a coleção a que pertence</span>
+                            <span className='pl-4 text-[13px] text-[#262626]'>Selecione a coleção a que pertence</span>
                         </div>
                         <div>
                             <FormControl fullWidth margin="dense">
-                                <InputLabel>{
+                                <InputLabel sx={{ color: 'white' }}>{
                                     dataToEdit != undefined ? dataToEdit.batchName : 'Lote'
                                 }</InputLabel>
                                 <Select
@@ -181,16 +193,14 @@ const CreateMiniatureModal = (props) => {
                                     ))}
                                 </Select>
                             </FormControl>
-                            <span className='pl-4 text-[13px] text-gray-500'>Selecione o lote a que pertence</span>
+                            <span className='pl-4 text-[13px] text-[#262626]'>Selecione o lote a que pertence</span>
                         </div>
-                        <div className='mt-2 '>
+                        <div className='mt-2'>
                             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='pt-br'>
-                                <DemoContainer components={['DatePicker']}>
-                                    <DatePicker format='YYYY-MM-DD' label={dataToEdit !== undefined ? dataToEdit.aquisitionDate : 'Data de Aquisição'} name='AcquisitionDate'
-                                    />
-                                </DemoContainer>
+                                <DatePicker className='w-full' format='YYYY-MM-DD' label={dataToEdit !== undefined ? dataToEdit.aquisitionDate : 'Data de Aquisição'} name='AcquisitionDate'
+                                />
                             </LocalizationProvider>
-                            <span className='pl-4 text-[13px] text-gray-500'>A data em que você o adquiriu</span>
+                            <span className='pl-4 text-[13px] text-[#262626]'>A data em que você o adquiriu</span>
                         </div>
                         <div className='flex flex-row items-center'>
                             <span>T-Hunt: </span>
@@ -200,7 +210,7 @@ const CreateMiniatureModal = (props) => {
                                 onChange={handleChangeThunt}
                                 name='IsThunt'
                             />
-                            <span className='text-gray-500 text-[13px]'>(Selecione se a sua miniatura for do tipo T-Hunt)</span>
+                            <span className='text-[#262626] text-[13px]'>(Selecione se a sua miniatura for do tipo T-Hunt)</span>
                         </div>
                         <div className='flex flex-row items-center'>
                             <span>Super T-Hunt: </span>
@@ -210,7 +220,7 @@ const CreateMiniatureModal = (props) => {
                                 onChange={handleChangeSuperThunt}
                                 name='IsSuperThunt'
                             />
-                            <span className='text-gray-500 text-[13px]'>(Selecione se a sua miniatura for do tipo Super T-Hunt)</span>
+                            <span className='text-[#262626] text-[13px]'>(Selecione se a sua miniatura for do tipo Super T-Hunt)</span>
                         </div>
 
                     </div>

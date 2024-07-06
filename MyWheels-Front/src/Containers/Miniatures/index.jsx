@@ -46,10 +46,9 @@ function Miniatures() {
     }
     return (
         <div>
-            <h1 className="text-black">2024</h1>
-            <div className='bg-blue-200 p-6'>
-                <button className='bg-white' onClick={HandleOpenModal}>
-                    <AddIcon className='text-black' />
+            <div className='flex justify-end p-4'>
+                <button className='bg-[#00c3ff] border-[1.5px] border-white rounded-full p-2 flex items-center justify-center hover:bg-blue-500 transition ease-in-out' onClick={HandleOpenModal}>
+                    <AddIcon className='text-white' sx={{fontSize: 40}} />
                 </button>
             </div>
             <div className='flex flex-row gap-4 flex-wrap'>
