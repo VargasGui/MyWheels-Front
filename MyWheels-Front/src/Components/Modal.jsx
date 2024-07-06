@@ -150,7 +150,11 @@ const CreateMiniatureModal = (props) => {
                         }} InputLabelProps={{ style: { color: 'white' } }} />
 
                         <TextField id="outlined-basic" label="Nome da miniatura" variant="outlined" defaultValue={dataToEdit != undefined ? dataToEdit.name : ""} name='Name' helperText="Ex. 87' Audi Quattro" margin="dense" required={true} InputProps={{
-                            style: { color: 'black' }
+                            style: { color: 'black' }, inputProps: { maxLength: 80, minLenght: 3}
+                        }} InputLabelProps={{ style: { color: 'white' } }} />
+
+                        <TextField id="outlined-basic" label="Nome para exibição" variant="outlined" defaultValue={dataToEdit != undefined ? dataToEdit.displayName : ""} name='DisplayName' helperText="Ex. Audi Quattro" margin="dense" required={true} InputProps={{
+                            style: { color: 'black' }, inputProps: { maxLength: 18, minLenght: 3}
                         }} InputLabelProps={{ style: { color: 'white' } }} />
 
                         <TextField id="outlined-basic" label="Descrição" variant="outlined" defaultValue={dataToEdit != undefined ? dataToEdit.description : ""} name='Description' helperText="Uma breve descrição dos detalhes (Opcional)." margin="dense" InputProps={{

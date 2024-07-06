@@ -18,37 +18,39 @@ const MiniatureCard = (props) => {
         setOpenModal(false);
     };
     return (
-        <Card sx={{ maxWidth: 280, backgroundColor: '#e0e0e0', borderRadius: '0.5 rem' }}>
-            <CardActionArea onClick={handleOpenModal}>
-
-                <div className='w-full flex items-center justify-center'>
-                    <div className='w-[80%] mt-3'>
-                        <CardMedia className='rounded-lg'
+        <>
+            <Card sx={{ maxWidth: 280, minWidth: 280, backgroundColor: '#d9d9d9', borderRadius: '0.6rem', position: 'relative'}}>
+                <CardActionArea onClick={handleOpenModal}>
+                    <div className='w-full flex items-center justify-center'>
+                        <CardMedia
                             component="img"
-                            height="140"
+                            sx={{ maxHeight: 160, objectFit: 'cover', objectPosition: 'center' }}
                             image={props.image}
                             alt=""
                         />
                     </div>
 
-                </div>
-
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                        {props.name}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        <span>Desc: {props.description}</span>
-                        <span>CollecName: {props.collectionName}</span>
-                        <span>BatchName: {props.batchName}</span>
-                        <span>AqcDate: {props.aquisitionDate}</span>
-                        <span>Thunt: {props.isThunt ? "true" : "false"}</span>
-                        <span>Super: {props.isSuper ? "true" : "false"}</span>
-                    </Typography>
-                </CardContent>
-            </CardActionArea>
-            <CustomizedDialogs openedModal={openModal} closedModal={handleCloseModal} miniaturesInfo={props}/>
-        </Card>
+                    <CardContent sx={{ padding: 0 }}>
+                        <Typography className=''>
+                            <div className='flex items-center justify-center'>
+                                <h1 className='text-xl font-bold text-center uppercase p-2'>{props.displayName}</h1>
+                            </div>
+                        </Typography>
+                        <Typography className='flex flex-row justify-center' sx={{ paddingBottom: 0.5 }}>
+                            <div className='flex w-[90%] justify-between'>
+                                <h2 className='font-semibold text-sm italic'>
+                                    {props.collectionName}
+                                </h2>
+                                <h2 className='font-semibold text-sm uppercase italic'>
+                                    {props.batch.Name}/{props.batch.ReleaseYear.slice(2, 4)}
+                                </h2>
+                            </div>
+                        </Typography>
+                    </CardContent>
+                </CardActionArea>
+                <CustomizedDialogs openedModal={openModal} closedModal={handleCloseModal} miniaturesInfo={props} />
+            </Card>
+        </>
     );
 }
 export default MiniatureCard;
@@ -56,9 +58,10 @@ export default MiniatureCard;
 MiniatureCard.propTypes = {
     image: PropTypes.string,
     name: PropTypes.string.isRequired,
+    displayName: PropTypes.string.isRequired,
     description: PropTypes.string,
     collectionName: PropTypes.string.isRequired,
-    batchName: PropTypes.string.isRequired,
+    batch: PropTypes.object.isRequired,
     aquisitionDate: PropTypes.string.isRequired,
     isThunt: PropTypes.bool.isRequired,
     isSuper: PropTypes.bool.isRequired,

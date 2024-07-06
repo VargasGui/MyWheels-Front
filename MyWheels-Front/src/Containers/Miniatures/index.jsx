@@ -45,13 +45,14 @@ function Miniatures() {
         return <h1>Carregando...</h1>
     }
     return (
-        <div>
+        <div className=''>
             <div className='flex justify-end p-4'>
                 <button className='bg-[#00c3ff] border-[1.5px] border-white rounded-full p-2 flex items-center justify-center hover:bg-blue-500 transition ease-in-out' onClick={HandleOpenModal}>
-                    <AddIcon className='text-white' sx={{fontSize: 40}} />
+                    <AddIcon className='text-white' sx={{ fontSize: 40 }} />
                 </button>
             </div>
-            <div className='flex flex-row gap-4 flex-wrap'>
+            <div className='flex flex-row justify-center gap-6 flex-wrap w-full'>
+                
                 {miniatures.length === 0 ?
 
 
@@ -62,8 +63,10 @@ function Miniatures() {
 
 
                     : miniatures.map((car) => (
-                        <Card key={car.Id} id={car.Id} image={car.ImageUrl} name={car.Name} description={car.Description} collectionName={car.Collection.Name} batchName={car.Batch.Name} aquisitionDate={car.AcquisitionDate} isThunt={car.IsThunt} isSuper={car.IsSuperThunt} />
+                        <Card key={car.Id} id={car.Id} image={car.ImageUrl} name={car.Name} displayName={car.DisplayName} description={car.Description} collectionName={car.Collection.Name} batch={car.Batch} aquisitionDate={car.AcquisitionDate} isThunt={car.IsThunt} isSuper={car.IsSuperThunt} />
+
                     ))}
+                    
             </div>
 
 

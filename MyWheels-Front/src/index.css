@@ -4,7 +4,11 @@
 
 body {
   background-color: #cdcbe3;
+  font-family: "Inter", sans-serif;
   /* background-color: #c9c6d1; */
+}
+h1, h2, span, p, a, button, input, label, select, option, textarea{
+  font-family: "Inter", sans-serif;
 }
 
 /* customScrollbar.css */
