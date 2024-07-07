@@ -18,7 +18,7 @@ const MiniatureCard = (props) => {
         setOpenModal(false);
     };
 
-    const color = props.isSuper ? '#e6c619' : props.isThunt ? '#8a2be2' : '#cccccc';
+    const color = props.isSuper ? 'bg-gradient-to-r from-[#E6C719] to-[#806F0E]' : props.isThunt ? 'bg-gradient-to-r from-[#8A2BE3] to-[#4C187D]' : 'bg-gradient-to-r from-[#838383] to-[#464343]';
 
     return (
         <div className='relative z-0'>
@@ -36,7 +36,7 @@ const MiniatureCard = (props) => {
                 </div>
             }
 
-            <Card sx={{ maxWidth: 280, minWidth: 280, borderRadius: '0.6rem', position: 'relative', backgroundColor: color }}>
+            <Card sx={{ maxWidth: 280, minWidth: 280, borderRadius: '0.6rem', position: 'relative'}} className={color}>
                 <CardActionArea onClick={handleOpenModal}>
                     <div className='w-full flex items-center justify-center'>
                         <CardMedia

@@ -30,3 +30,12 @@ h1, h2, span, p, a, button, input, label, select, option, textarea{
   background-color: #262626; /* cor do indicador da scrollbar ao passar o mouse */
   cursor: pointer;
 }
+
+.testedefogo {
+  /* Aplica o degradê como fundo do texto */
+  background: linear-gradient(to right, #3498db, #2ecc71);
+  /* Define a cor do texto transparente para que o degradê apareça */
+  -webkit-background-clip: text; /* Para navegadores baseados em WebKit */
+  background-clip: text;
+  color: transparent;
+}

@@ -61,11 +61,11 @@ function Miniatures() {
         <div className=''>
             <div className='flex justify-between items-center w-[95%]'>
                 <div className='flex justify-start items-center p-4 gap-2'>
-                    <button className='bg-[#4169E1] rounded-lg p-2 flex items-center justify-center hover:bg-[#0000CD] transition ease-in-out' onClick={HandleOpenModal}>
+                    <button className='bg-[#4169E1] shadow-2xl rounded-lg p-2 flex items-center justify-center hover:bg-[#0000CD] transition ease-in-out' onClick={HandleOpenModal}>
                         <AddIcon className='text-black' sx={{ fontSize: 20 }} />
                         <span className='px-2 font-semibold text-md'>Adicionar</span>
                     </button>
-                    <button className='bg-[#A9A9A9] rounded-lg p-2 flex items-center justify-center hover:bg-[#575961] transition ease-in-out'>
+                    <button className='bg-[#A9A9A9] shadow-2xl rounded-lg p-2 flex items-center justify-center hover:bg-[#575961] transition ease-in-out'>
                         <FilterIcon className='text-black' sx={{ fontSize: 20 }} />
                         <span className='px-2 font-semibold text-md'>Filtrar</span>
                     </button>
