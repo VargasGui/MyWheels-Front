@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  background-color: #cdcbe3;
+  background-color: #E0E0E0;
   font-family: "Inter", sans-serif;
   /* background-color: #c9c6d1; */
 }
@@ -31,11 +31,3 @@ h1, h2, span, p, a, button, input, label, select, option, textarea{
   cursor: pointer;
 }
 
-.testedefogo {
-  /* Aplica o degradê como fundo do texto */
-  background: linear-gradient(to right, #3498db, #2ecc71);
-  /* Define a cor do texto transparente para que o degradê apareça */
-  -webkit-background-clip: text; /* Para navegadores baseados em WebKit */
-  background-clip: text;
-  color: transparent;
-}

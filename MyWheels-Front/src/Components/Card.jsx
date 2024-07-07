@@ -36,24 +36,24 @@ const MiniatureCard = (props) => {
                 </div>
             }
 
-            <Card sx={{ maxWidth: 280, minWidth: 280, borderRadius: '0.6rem', position: 'relative'}} className={color}>
+            <Card sx={{ maxWidth: 280, minWidth: 280, borderRadius: '0.6rem', position: 'relative', maxHeight: 240}} className={color}>
                 <CardActionArea onClick={handleOpenModal}>
                     <div className='w-full flex items-center justify-center'>
                         <CardMedia
                             component="img"
-                            sx={{ maxHeight: 160, objectFit: 'cover', objectPosition: 'center' }}
-                            image={props.image}
+                            sx={{ maxHeight: 160, minHeight: 160, objectFit: 'cover', objectPosition: 'center' }}
+                            image={props.image ? props.image : '../../public/testeImagePPP.jpg'}
                             alt=""
                         />
                     </div>
 
-                    <CardContent sx={{ padding: 0 }}>
+                    <CardContent sx={{ padding: 0}}>
                         <Typography className=''>
                             <div className='flex items-center justify-center shadow-xl'>
                                 <h1 className='text-xl font-black text-center uppercase p-2'>{props.displayName}</h1>
                             </div>
                         </Typography>
-                        <Typography className='flex flex-row justify-center pt-2' sx={{ paddingBottom: 0.5 }}>
+                        <Typography className='flex flex-row justify-center items-end pt-2' sx={{ paddingBottom: 0.5 }}>
                             <div className='flex w-[90%] justify-between'>
                                 <h2 className='font-bold text-sm italic'>
                                     {props.collectionName}

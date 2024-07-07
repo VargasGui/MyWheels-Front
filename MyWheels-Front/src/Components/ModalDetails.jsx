@@ -70,7 +70,7 @@ export default function CustomizedDialogs(props) {
     }
 
     const headerColor = miniaturesInfo.isSuper ? 'bg-gradient-to-r from-[#E6C719] to-[#806F0E]' : miniaturesInfo.isThunt ? 'bg-gradient-to-r from-[#8A2BE3] to-[#4C187D]' : 'bg-gradient-to-r from-[#838383] to-[#464343]';
-    const contentColor = miniaturesInfo.isSuper ? '#ECDD88' : miniaturesInfo.isThunt ? '#AE73E6' : '#dbdbdb';
+    const contentColor = miniaturesInfo.isSuper ? '#ECDD88' : miniaturesInfo.isThunt ? '#AE73E6' : '#ADADAD';
     const rarity = miniaturesInfo.isThunt ? 'T-Hunt' : miniaturesInfo.isSuper ? 'Super T-Hunt' : 'Comum';
 
     return (
@@ -126,7 +126,7 @@ export default function CustomizedDialogs(props) {
                         </div>
                         <div className='flex flex-col'>
                             <span className='font-bold text-lg'>Raridade</span>
-                            <span className={rarity == 'Super T-Hunt' ? 'bg-gradient-to-r from-[#E6C719] to-[#806F0E] bg-clip-text text-transparent font-black' : 'text-white'}>{rarity}</span>
+                            <span className={rarity == 'Super T-Hunt' ? 'bg-gradient-to-r from-[#E6C719] to-[#806F0E] bg-clip-text text-transparent font-black' : rarity == 'T-Hunt' ? 'bg-gradient-to-r from-[#8A2BE3] to-[#4C187D] bg-clip-text text-transparent font-black' : 'bg-gradient-to-r from-[#838383] to-[#464343] bg-clip-text text-transparent font-black'}>{rarity}</span>
                         </div>
                     </div>
                     <Typography sx={{ maxWidth: 600, minWidth: 600 }}>
@@ -138,7 +138,7 @@ export default function CustomizedDialogs(props) {
                     </div>
                 </DialogContent>
                 {
-                    openSettings && <DialogActions className='bg-[#cccccc] shadow-xl'>
+                    openSettings && <DialogActions className={headerColor}>
                         <div className='flex flex-row bg-[#4169e0] p-3 rounded-full text-white text-sm hover:bg-gray-400 transition ease-in-out'>
                             <button onClick={openEditModal}>
                                 <EditIcon />
