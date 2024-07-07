@@ -1,5 +1,6 @@
 export default class Car{
-    constructor(image, name, displayName, collectionId, batchId, description, acquisitionDate, isThunt, isSuperThunt){
+    constructor(number, image, name, displayName, collectionId, batchId, description, acquisitionDate, isThunt, isSuperThunt){
+        this.number = Number(number);
         this.imageUrl = image;
         this.name = name;
         this.displayName = displayName;

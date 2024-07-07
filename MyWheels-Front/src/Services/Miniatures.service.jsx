@@ -23,6 +23,7 @@ export const MiniaturesService = () => {
 
   const CreateMiniatures = (form) => {
     const car = new Car(
+      form.Number,
       form.ImageUrl,
       form.Name,
       form.DisplayName,
@@ -43,6 +44,7 @@ export const MiniaturesService = () => {
 
   const UpdateMiniatures = (form, id) => {
     const car = new Car(
+      form.Number,
       form.ImageUrl,
       form.Name,
       form.DisplayName,

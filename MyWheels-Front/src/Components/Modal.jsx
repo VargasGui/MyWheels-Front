@@ -12,7 +12,6 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -145,16 +144,21 @@ const CreateMiniatureModal = (props) => {
                         </span>
                     </DialogContentText>
                     <div className='flex flex-col'>
+
+                        <TextField id="outlined-basic" label="Número da miniatura" variant="outlined" defaultValue={dataToEdit != undefined ? dataToEdit.number : ""} name='Number' helperText="(Número que aparece no topo do blister)" margin="dense" required={true} InputProps={{
+                            style: { color: 'black' }, inputProps: { maxLength: 3, minLenght: 1 }
+                        }} InputLabelProps={{ style: { color: 'white' } }} />
+
                         <TextField id="outlined-basic" label="Link da Imagem" variant="outlined" defaultValue={dataToEdit != undefined ? dataToEdit.image : ""} name='ImageUrl' helperText="Ex. https://i.ytimg.com/vi/ytj4SdZbzMw/maxresdefault.jpg" margin="dense" InputProps={{
                             style: { color: 'black' }
                         }} InputLabelProps={{ style: { color: 'white' } }} />
 
                         <TextField id="outlined-basic" label="Nome da miniatura" variant="outlined" defaultValue={dataToEdit != undefined ? dataToEdit.name : ""} name='Name' helperText="Ex. 87' Audi Quattro" margin="dense" required={true} InputProps={{
-                            style: { color: 'black' }, inputProps: { maxLength: 80, minLenght: 3}
+                            style: { color: 'black' }, inputProps: { maxLength: 80, minLenght: 3 }
                         }} InputLabelProps={{ style: { color: 'white' } }} />
 
                         <TextField id="outlined-basic" label="Nome para exibição" variant="outlined" defaultValue={dataToEdit != undefined ? dataToEdit.displayName : ""} name='DisplayName' helperText="Ex. Audi Quattro" margin="dense" required={true} InputProps={{
-                            style: { color: 'black' }, inputProps: { maxLength: 18, minLenght: 3}
+                            style: { color: 'black' }, inputProps: { maxLength: 18, minLenght: 3 }
                         }} InputLabelProps={{ style: { color: 'white' } }} />
 
                         <TextField id="outlined-basic" label="Descrição" variant="outlined" defaultValue={dataToEdit != undefined ? dataToEdit.description : ""} name='Description' helperText="Uma breve descrição dos detalhes (Opcional)." margin="dense" InputProps={{
@@ -183,7 +187,7 @@ const CreateMiniatureModal = (props) => {
                         <div>
                             <FormControl fullWidth margin="dense">
                                 <InputLabel sx={{ color: 'white' }}>{
-                                    dataToEdit != undefined ? dataToEdit.batchName : 'Lote'
+                                    dataToEdit != undefined ? dataToEdit.batch.Name : 'Lote'
                                 }</InputLabel>
                                 <Select
                                     required={true}
@@ -231,8 +235,8 @@ const CreateMiniatureModal = (props) => {
 
                 </DialogContent>
                 <DialogActions className='text-white'>
-                    <div className='bg-red-400 p-2 rounded-full cursor-pointer'>
-                        <a onClick={handleClose}>Cancelar</a>
+                    <div className='bg-red-400 p-2 rounded-full cursor-pointer' onClick={handleClose}>
+                        <span className='w-full min-h-full' >Cancelar</span>
                     </div>
                     <div className='bg-blue-400 p-2 rounded-full'>
                         <button type='submit' className='text-white'>{dataToEdit != undefined ? 'Atualizar' : 'Adicionar'}</button>

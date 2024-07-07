@@ -28,7 +28,7 @@ function Navbar() {
                         <InventoryIcon fontSize='small' />
                         <a href='#' className=''>Lotes</a>
                     </li>
-                    <li className="text-white text-md italic font-semibold flex items-center gap-1 pl-10">
+                    <li className="text-white text-md italic font-semibold flex items-center gap-1 ml-8">
                         <HelpIcon fontSize='small' />
                         <div className='ml-[-7px] pt-[2px] flex items-center '>
                             <CommonMenu title={"Infos"} item1={"-- O que é uma miniatura T-Hunt ou Super T-Hunt?"} item2={"-- Tudo que você precisa saber para uma boa coleção"} item3={"-- Sobre nós"}/>
